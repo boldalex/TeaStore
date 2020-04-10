@@ -4,6 +4,10 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import Data.DBAccessFactory;
+import Data.JDBCOrderDAO;
+import Data.JDBCProductDAO;
+
 public class AdminFrame extends JFrame{
 	private JMenuBar mBar;
 	private JMenu mSales, mProducts, mAttendancy, mMenu;
@@ -19,9 +23,14 @@ public class AdminFrame extends JFrame{
 	private JButton btnAddNew;
 	private JButton btnRemove;
 	private JTextArea txtEmployees;
+	private JDBCOrderDAO orderDAO;
+	private JDBCProductDAO productDAO;
 
 
 	public AdminFrame() {
+		orderDAO = DBAccessFactory.getOrderDAO();
+		productDAO = DBAccessFactory.getProductDAO();
+		
 		mBar = new JMenuBar();
 
 		mSales = new JMenu("Sales Report");
@@ -39,6 +48,13 @@ public class AdminFrame extends JFrame{
 		mDaily = new JMenuItem("Daily Report");
 		mDaily.setMnemonic(KeyEvent.VK_D);
 		mDaily.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.CTRL_MASK));
+		mDaily.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AdminFrame.this.setContentPane(new DailyReportPanel());
+				AdminFrame.this.setSize(650,500);
+			}
+		});
 
 		mWeekly = new JMenuItem("Weekly Report");
 		mWeekly.setMnemonic(KeyEvent.VK_W);
@@ -52,9 +68,16 @@ public class AdminFrame extends JFrame{
 		mList.setMnemonic(KeyEvent.VK_L);
 		mList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,ActionEvent.CTRL_MASK));
 
-		mReport = new JMenuItem("Product Report");
+		mReport = new JMenuItem("Product Management");
 		mReport.setMnemonic(KeyEvent.VK_R);
 		mReport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,ActionEvent.CTRL_MASK));
+		mReport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AdminFrame.this.setContentPane(new ProductMGMPanel());
+				AdminFrame.this.setSize(750,500);
+			}
+		});
 
 		mAttReport = new JMenuItem("Attendancy Report");
 		mAttReport.setMnemonic(KeyEvent.VK_A);
@@ -121,12 +144,20 @@ public class AdminFrame extends JFrame{
 		jbSend.setSize(70,50);
 		
 		
-//		this.setContentPane(new EmployeeMGMPanel());
+		this.setContentPane(new OrderReportPanel());
 		this.setVisible(true);
 		this.setTitle("Administrator Panel");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(600,500);
 		this.setLocationRelativeTo(null);
+		
+		this.addWindowListener(new WindowAdapter() {
+		    public void windowClosing(WindowEvent e)
+		    {
+		        orderDAO.close();
+		        productDAO.close();
+		    }
+		});
 
 	}
 }

@@ -3,13 +3,13 @@ package Business;
 public class OrderItem {
 	
 	private Product product;
-	private int id;
+	private int id, toppingsQty;
 	private String size, iceQuantity, sugar;
 	private double price;
 	
 	private static int id_Count = 1;
 	
-	
+	public OrderItem() {}
 	//Constructor
 	public OrderItem(Product newProduct) {
 		product = newProduct;
@@ -49,7 +49,7 @@ public class OrderItem {
 	}
 	public double getPrice() {
 		double price = product.getPrice();
-		
+		price += toppingsQty * 0.5;
 		if (size.equals("Large"))
 			price += 0.5;
 		return price;

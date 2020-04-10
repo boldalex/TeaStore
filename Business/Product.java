@@ -22,6 +22,7 @@ public class Product {
 		return price;
 	}
 	
+	public Product() {}
 	//Constructor **all attributes should be provided to create an object
 	public Product(String newName, String newCategory, double newPrice) {
 		productID = id_Count++;
@@ -30,10 +31,23 @@ public class Product {
 		this.price = newPrice;
 	}
 	
-	public String toString() {
-		return "ID: " + productID + ", Name: " + name + ", Category: " + category + ", Price: " + price;
+	//Setters
+	public void setProductId(int id) {
+		productID = id;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
-	//On this phase of project interface for changing produc data is not provided, so setters in this class are also not provided
+	public String toString() {
+		return productID + "\t\t" + name + "\tCategory: " + category + "\tPrice: " + price;
+	}
+	
 
 }

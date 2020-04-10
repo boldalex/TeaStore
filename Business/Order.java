@@ -1,4 +1,6 @@
 package Business;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,34 @@ import Presentation.OrderPanel;
 public class Order {
 	
 	private static DefaultListModel<OrderItem> orderList = new DefaultListModel<OrderItem>();
+	
+	private int OrderId;
+	private Date date;
+	private double total;
+	
+	public void setId(int id) {
+		this.OrderId = id;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public void setTotal(double total) {
+		this.total = total;
+	}
+	
+	public int getOrderId() {
+		return OrderId;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public double getTotal() {
+		return total;
+	}
+	
+	public String toString() {
+		return OrderId + "\t" + date + "\t" + "\t" + total;
+	}
 	
 	
 	public static void addItem(OrderItem item) {
