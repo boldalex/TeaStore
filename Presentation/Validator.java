@@ -47,4 +47,19 @@ public class Validator {
 		JOptionPane.showMessageDialog(c, message, "Invalid Entry", JOptionPane.ERROR_MESSAGE);
 	}
 
+	public static boolean isText(JTextComponent c, String title) {
+		String s = c.getText();
+		int len = s.length();
+		for (int i = 0; i < len; i++) {
+			// checks whether the character is not a letter
+			// if it is not a letter ,it will return false
+			if ((!Character.isLetter(s.charAt(i)))&&(!(s.charAt(i) == ' '))) {
+				showMessage(c, title + " can't contain digits.\nPlease re-enter");
+				c.requestFocusInWindow();
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

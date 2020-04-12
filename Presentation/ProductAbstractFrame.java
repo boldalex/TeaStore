@@ -7,13 +7,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.SwingConstants;
+
+import Business.Product;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
 public class ProductAbstractFrame extends JFrame {
-	private JTextField txtName;
-	private JTextField txtPrice;
-	private JComboBox cbCategory;
+	protected JTextField txtName;
+	protected JTextField txtPrice;
+	protected JComboBox cbCategory;
 	public ProductAbstractFrame() {
 		getContentPane().setLayout(null);
 		

@@ -25,6 +25,9 @@ public class OrderItem {
 	}
 	
 	//Setters
+	public void setProduct(Product product) {
+		this.product = product;
+	}
 	public void setSize(String newSize) {
 		size = newSize;
 	}
@@ -33,6 +36,9 @@ public class OrderItem {
 	}
 	public void setSugar(String newSugar) {
 		sugar = newSugar;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
 	public String getSize() {
@@ -56,6 +62,9 @@ public class OrderItem {
 	}
 	public int getID() {
 		return id;
+	}
+	public int getProductId() {
+		return product.getID();
 	}
 
 }

@@ -184,13 +184,17 @@ public class AddEmployeeFrame extends JFrame {
 		
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setVisible(true);
+		this.getContentPane().setBackground(new Color(210, 232, 204));
 	}
 	
 	public boolean isValidData() {
 		if (!Validator.isPresent(txtId, "ID")) return false;
 		if (!Validator.isPresent(txtPassword, "Password")) return false;
 		if (!Validator.isPresent(txtFirstName, "First Name")) return false;
+		if (!Validator.isText(txtFirstName, "First Name")) return false;
 		if (!Validator.isPresent(txtLastName, "Last Name")) return false;
+		if (!Validator.isText(txtLastName, "Last Name")) return false;
+		if (!Validator.isPresent(txtAge, "Age")) return false;
 		if (!Validator.isInteger(txtAge, "Age")) return false;
 		return true;
 	}

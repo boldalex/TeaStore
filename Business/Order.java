@@ -10,11 +10,15 @@ import Presentation.OrderPanel;
 
 public class Order {
 	
-	private static DefaultListModel<OrderItem> orderList = new DefaultListModel<OrderItem>();
+	private DefaultListModel<OrderItem> orderList = new DefaultListModel<OrderItem>();
 	
 	private int OrderId;
 	private Date date;
-	private double total;
+	private double total, subTotal, tax;
+	
+	public Order() {
+		date = Date.valueOf(LocalDate.now());
+	}
 	
 	public void setId(int id) {
 		this.OrderId = id;
@@ -25,6 +29,13 @@ public class Order {
 	public void setTotal(double total) {
 		this.total = total;
 	}
+	public void setSubTotal(double subTotal) {
+		this.subTotal = subTotal;
+	}
+	public void setTax(double tax) {
+		this.tax = tax;
+	}
+	
 	
 	public int getOrderId() {
 		return OrderId;
@@ -35,27 +46,34 @@ public class Order {
 	public double getTotal() {
 		return total;
 	}
+	public double getSubTotal() {
+		return subTotal;
+	}
+	public double getTax() {
+		return tax;
+	}
+	
 	
 	public String toString() {
 		return OrderId + "\t" + date + "\t" + "\t" + total;
 	}
 	
 	
-	public static void addItem(OrderItem item) {
+	public void addItem(OrderItem item) {
 		orderList.addElement(item);
 	}
-	public static DefaultListModel<OrderItem> getList() {
+	public DefaultListModel<OrderItem> getList() {
 		return orderList;
 	}
-	public static void deleteItem(OrderItem item) {
+	public void deleteItem(OrderItem item) {
 		orderList.removeElement(item);
 	}
-	public static OrderItem getFirstItem() {
+	public OrderItem getFirstItem() {
 		return orderList.get(0);
 	}
-	public static void clear() {
+	public void clear() {
 		orderList.clear();
-		OrderPanel.updateCost();
+		OrderPanel.getOrderPanel().updateCost();
 	}
 
 }

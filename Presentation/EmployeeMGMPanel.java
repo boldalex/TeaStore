@@ -20,20 +20,12 @@ public class EmployeeMGMPanel extends JPanel {
 	private JButton btnSearch;
 	
 	public EmployeeMGMPanel() {
-		
-		GridBagLayout gbl_jpEmpReport = new GridBagLayout();
-		gbl_jpEmpReport.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_jpEmpReport.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_jpEmpReport.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_jpEmpReport.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		this.setLayout(gbl_jpEmpReport);
+		setLayout(null);
 		
 		btnAddNew = new JButton("Add New");
-		GridBagConstraints gbc_btnAddNew = new GridBagConstraints();
-		gbc_btnAddNew.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAddNew.gridx = 3;
-		gbc_btnAddNew.gridy = 0;
-		this.add(btnAddNew, gbc_btnAddNew);
+		btnAddNew.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnAddNew.setBounds(462, 10, 98, 30);
+		this.add(btnAddNew);
 		btnAddNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -42,11 +34,9 @@ public class EmployeeMGMPanel extends JPanel {
 		});
 		
 		btnShowAll = new JButton("Show all");
-		GridBagConstraints gbc_btnShowAll = new GridBagConstraints();
-		gbc_btnShowAll.insets = new Insets(0, 0, 5, 0);
-		gbc_btnShowAll.gridx = 3;
-		gbc_btnShowAll.gridy = 1;
-		this.add(btnShowAll, gbc_btnShowAll);
+		btnShowAll.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnShowAll.setBounds(462, 49, 98, 30);
+		this.add(btnShowAll);
 		btnShowAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -55,22 +45,14 @@ public class EmployeeMGMPanel extends JPanel {
 		});
 		
 		txtEmployees = new JTextArea();
+		txtEmployees.setBounds(10, 10, 420, 319);
 		txtEmployees.setEditable(false);
-		GridBagConstraints gbc_txtEmployees = new GridBagConstraints();
-		gbc_txtEmployees.gridheight = 9;
-		gbc_txtEmployees.gridwidth = 3;
-		gbc_txtEmployees.insets = new Insets(0, 0, 0, 5);
-		gbc_txtEmployees.fill = GridBagConstraints.BOTH;
-		gbc_txtEmployees.gridx = 0;
-		gbc_txtEmployees.gridy = 0;
-		this.add(txtEmployees, gbc_txtEmployees);
+		this.add(txtEmployees);
 		
 		btnSearch = new JButton("Search");
-		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
-		gbc_btnSearch.insets = new Insets(0, 0, 5, 0);
-		gbc_btnSearch.gridx = 3;
-		gbc_btnSearch.gridy = 2;
-		add(btnSearch, gbc_btnSearch);
+		btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnSearch.setBounds(462, 89, 98, 30);
+		add(btnSearch);
 		btnSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

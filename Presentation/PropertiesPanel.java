@@ -8,21 +8,31 @@ import javax.swing.*;
 import Business.Order;
 import Business.OrderItem;
 public class PropertiesPanel extends JPanel {
-	private static JRadioButton jrbLarge, jrbRegular, 
+	//Singleton
+	private static PropertiesPanel panel = null;
+	
+	private JRadioButton jrbLarge, jrbRegular, 
 	jrbNormalIce, jrbLessIce, jrbNoIce, jrbWarm, jrbHot,
 	jrbNormalSugar, jrbLessSugar, jrbHalfSugar, jrbSlightSugar, jrbNoSugar;
 
-	private static JCheckBox jcbTapioca, jcbPudding, jcbCheese, jcbGrassJelly;
+	private JCheckBox jcbTapioca, jcbPudding, jcbCheese, jcbGrassJelly;
 	
-	private static JLabel jlSize, jlSugar, jlIce, jlToppings, jlPriceLabel, jlPriceValue, jlName;
+	private JLabel jlSize, jlSugar, jlIce, jlToppings, jlPriceLabel, jlPriceValue, jlName;
 	
-	private static JButton jbDelete;
+	private JButton jbDelete;
 	
-	private static ButtonGroup groupSugar, groupIce, groupSize;
+	private ButtonGroup groupSugar, groupIce, groupSize;
 
-	private static OrderItem orderItem;
+	private OrderItem orderItem;
+	private OrderPanel orderPanel;
 
-	public PropertiesPanel() {
+	public static PropertiesPanel getPropertiesPanel() {
+		if (panel == null)
+			panel = new PropertiesPanel();
+		return panel;
+	}
+	
+	private PropertiesPanel() {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		jlSize = new JLabel("Size: ");
@@ -51,8 +61,8 @@ public class PropertiesPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				OrderItem temp = orderItem;
-				Order.deleteItem(temp);
-				OrderPanel.updateCost();
+				orderPanel.getOrder().deleteItem(temp);
+				orderPanel.updateCost();
 			}	
 		});
 		
@@ -65,7 +75,7 @@ public class PropertiesPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				orderItem.setSize("Large");
 				jlPriceValue.setText(String.valueOf(orderItem.getPrice()) + "$");
-				OrderPanel.updateCost();
+				orderPanel.updateCost();
 			}	
 		});
 		jrbRegular.addActionListener(new ActionListener() {
@@ -73,7 +83,7 @@ public class PropertiesPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				orderItem.setSize("Regular");
 				jlPriceValue.setText(String.valueOf(orderItem.getPrice()) + "$");
-				OrderPanel.updateCost();
+				orderPanel.updateCost();
 			}	
 		});
 		groupSize = new ButtonGroup();
@@ -289,8 +299,8 @@ public class PropertiesPanel extends JPanel {
 
 	}
 
-	public static void showItemProperties(OrderItem oi) {
-		if (OrderPanel.isSelection()) {
+	public void showItemProperties(OrderItem oi) {
+		if (orderPanel.isSelection()) {
 			orderItem = oi;
 			jlName.setText(orderItem.getProductName());
 			jlPriceValue.setText(String.valueOf(orderItem.getPrice()) + "$");
@@ -331,12 +341,16 @@ public class PropertiesPanel extends JPanel {
 		}
 	}
 	
-	public static void showEmpty() {
+	public void showEmpty() {
 		orderItem = null;
 		jlName.setText("<Product Name>");
 		groupIce.clearSelection();
 		groupSize.clearSelection();
 		groupSugar.clearSelection();
+	}
+	
+	public void setOrderPanel() {
+		orderPanel = OrderPanel.getOrderPanel();
 	}
 
 }

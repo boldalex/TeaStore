@@ -19,10 +19,11 @@ public class ProductButton extends JButton{
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				OrderPanel orderPanel = OrderPanel.getOrderPanel();
 				OrderItem order = new OrderItem(product);
-				Order.addItem(order);
-				OrderPanel.setSelected(order.getID()-1);
-				OrderPanel.updateCost();
+				orderPanel.getOrder().addItem(order);
+				orderPanel.setSelected(order.getID()-1);
+				orderPanel.updateCost();
 			}
 		});
 	}

@@ -52,21 +52,14 @@ public class AdminFrame extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AdminFrame.this.setContentPane(new DailyReportPanel());
+				AdminFrame.this.getContentPane().setBackground(new Color(210, 232, 204));
 				AdminFrame.this.setSize(650,500);
 			}
 		});
 
-		mWeekly = new JMenuItem("Weekly Report");
-		mWeekly.setMnemonic(KeyEvent.VK_W);
-		mWeekly.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,ActionEvent.CTRL_MASK));
-
 		mMonthly = new JMenuItem("Monthly Report");
 		mMonthly.setMnemonic(KeyEvent.VK_M);
 		mMonthly.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,ActionEvent.CTRL_MASK));
-
-		mList = new JMenuItem("Product List");
-		mList.setMnemonic(KeyEvent.VK_L);
-		mList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,ActionEvent.CTRL_MASK));
 
 		mReport = new JMenuItem("Product Management");
 		mReport.setMnemonic(KeyEvent.VK_R);
@@ -75,6 +68,7 @@ public class AdminFrame extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AdminFrame.this.setContentPane(new ProductMGMPanel());
+				AdminFrame.this.getContentPane().setBackground(new Color(210, 232, 204));
 				AdminFrame.this.setSize(750,500);
 			}
 		});
@@ -86,7 +80,8 @@ public class AdminFrame extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AdminFrame.this.setContentPane(new AttendancyReportPanel());
-				AdminFrame.this.setSize(650,500);
+				AdminFrame.this.getContentPane().setBackground(new Color(210, 232, 204));
+				AdminFrame.this.setSize(700,420);
 			}
 		});
 		
@@ -96,8 +91,9 @@ public class AdminFrame extends JFrame{
 		mEmpReport.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AdminFrame.this.setContentPane(new EmployeeMGMPanel());	
-				AdminFrame.this.setSize(601,500);
+				AdminFrame.this.setContentPane(new EmployeeMGMPanel());
+				AdminFrame.this.getContentPane().setBackground(new Color(210, 232, 204));
+				AdminFrame.this.setSize(601,400);
 			}
 		});
 		
@@ -115,10 +111,8 @@ public class AdminFrame extends JFrame{
 
 
 		mSales.add(mDaily);
-		mSales.add(mWeekly);
 		mSales.add(mMonthly);
 
-		mProducts.add(mList);
 		mProducts.add(mReport);
 
 		mAttendancy.add(mAttReport);
@@ -144,8 +138,9 @@ public class AdminFrame extends JFrame{
 		jbSend.setSize(70,50);
 		
 		
-		this.setContentPane(new OrderReportPanel());
 		this.setVisible(true);
+		this.setBackground(Color.cyan);
+		this.getContentPane().setBackground(new Color(210, 232, 204));
 		this.setTitle("Administrator Panel");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(600,500);

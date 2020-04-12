@@ -20,7 +20,8 @@ public class JDBCProductDAO implements ProductDAO {
 	
 	public void close() {
 		try {
-			rs.close();
+			if (rs != null)
+				rs.close();
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

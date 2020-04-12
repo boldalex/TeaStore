@@ -15,6 +15,9 @@ import javax.swing.plaf.*;
 import Business.Employee;
 import Business.Order;
 import Business.Shift;
+import Data.DBAccessFactory;
+import Data.JDBCOrderDAO;
+import Data.JDBCProductDAO;
 import Data.ShiftDAO;
 
 public class WorkerFrame extends JFrame {
@@ -24,6 +27,8 @@ public class WorkerFrame extends JFrame {
 	private Shift shift;
 	private Employee emp;
 	private ShiftDAO shiftDAO = new ShiftDAO();
+	private JDBCOrderDAO orderDAO = DBAccessFactory.getOrderDAO();
+	private JDBCProductDAO productDAO = DBAccessFactory.getProductDAO();
 	
 	public WorkerFrame(Employee employee){
 		//CREATING NEW SHIFT AT CURRENT DATE AND TIME
@@ -51,8 +56,10 @@ public class WorkerFrame extends JFrame {
 		this.setJMenuBar(mBar);
 		
 		ProductPanel product = new ProductPanel();
-		OrderPanel order = new OrderPanel();
-		PropertiesPanel properties = new PropertiesPanel();
+		OrderPanel order = OrderPanel.getOrderPanel();
+		PropertiesPanel properties = PropertiesPanel.getPropertiesPanel();
+		order.setPropertiesPanel();
+		properties.setOrderPanel();
 		
 		JButton jbEncash = new JButton("Encash");
 		JButton jbClear = new JButton("Clear All");
@@ -61,7 +68,14 @@ public class WorkerFrame extends JFrame {
 		jbClear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					Order.clear();
+				OrderPanel.getOrderPanel().clear();
+			}
+		});
+		jbEncash.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				orderDAO.createOrder(order.getOrder());
+				order.setNewOrder();
 			}
 		});
 		
@@ -98,6 +112,9 @@ public class WorkerFrame extends JFrame {
 		    	System.out.println("finished");
 		        shift.finishShift();
 		        shiftDAO.addShift(shift);
+		        
+		        orderDAO.close();
+		        productDAO.close();
 		    }
 		});
 

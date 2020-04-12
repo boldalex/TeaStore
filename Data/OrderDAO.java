@@ -13,6 +13,6 @@ public interface OrderDAO {
 	public ArrayList<OrderItem> getOrderItems(int Order_Id);
 	
 	public int createOrder(Order order);
-	public void createOrderItem();
+	public int createOrderItem(OrderItem item, int orderId);
 
 }

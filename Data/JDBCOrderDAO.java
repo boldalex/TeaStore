@@ -4,13 +4,17 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
+
 import Business.Order;
 import Business.OrderItem;
+import Business.Product;
 
 public class JDBCOrderDAO implements OrderDAO {
 
 	private Connection connection;
 	private ResultSet rs = null;
+	private JDBCProductDAO productDAO = DBAccessFactory.getProductDAO();
 
 	public JDBCOrderDAO() {
 		connection = ConnectionFactory.getConnection();
@@ -18,7 +22,8 @@ public class JDBCOrderDAO implements OrderDAO {
 
 	public void close() {
 		try {
-			rs.close();
+			if (rs != null)
+				rs.close();
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -31,11 +36,19 @@ public class JDBCOrderDAO implements OrderDAO {
 		order.setId(rs.getInt("Order_Id"));
 		order.setDate(rs.getDate("Order_Date") );
 		order.setTotal(rs.getDouble("Order_Total"));
+		order.setSubTotal(rs.getDouble("SubTotal"));
+		order.setTax(rs.getDouble("Tax"));
 		return order;
 	}
 	
 	private OrderItem extractOrderItemFromResultSet(ResultSet rs) throws SQLException {
 		OrderItem item = new OrderItem();
+		Product product = productDAO.getProduct(rs.getInt("Product_Id"));
+		item.setProduct(product);
+		item.setSize(rs.getString("Item_Size"));
+		item.setIce(rs.getString("Ice"));
+		item.setSugar(rs.getString("Sugar"));
+		item.setPrice(rs.getDouble("Price"));
 		return item;
 	}
 
@@ -46,9 +59,9 @@ public class JDBCOrderDAO implements OrderDAO {
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
 			String query = "SELECT * FROM orders WHERE Order_Id = " + id;
 			rs = statement.executeQuery(query);
-			
-			rs.next();
-			order = extractOrderFromResultSet(rs);
+			if (rs.next() != false) {
+				order = extractOrderFromResultSet(rs);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,18 +101,18 @@ public class JDBCOrderDAO implements OrderDAO {
 		ArrayList<OrderItem> items = new ArrayList<OrderItem>();
 		try {
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
-			String query = "SELECT * FROM orderitems WHERE Order_Id = " + orderId;
+			String query = "SELECT * FROM orderitems WHERE Order_Id = '" + orderId + "'";
 			rs = statement.executeQuery(query);
 
-//			while(rs.next()) {
-//				items.add(extractOrderFromResultSet(rs));
-//			}		
+			while(rs.next()) {
+				items.add(extractOrderItemFromResultSet(rs));
+			}		
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return items;
 	}
 
 	private int chooseNewOrderId() {
@@ -124,13 +137,21 @@ public class JDBCOrderDAO implements OrderDAO {
 	public int createOrder(Order order) {
 		int count = 0;
 		try {
+			int id = chooseNewOrderId();
 			PreparedStatement create = null;
-			String sql = "INSERT INTO orders VALUES ( ?, ?, ?)";
+			String sql = "INSERT INTO orders VALUES ( ?, ?, ?, ?, ?)";
 			create = connection.prepareStatement(sql);
-			create.setInt(1, chooseNewOrderId());
+			create.setInt(1, id);
 			create.setDate(2, order.getDate());
 			create.setDouble(3, order.getTotal());
+			create.setDouble(4, order.getSubTotal());
+			create.setDouble(5, order.getTax());
 			count = create.executeUpdate();
+			
+			DefaultListModel<OrderItem> orderList = order.getList();
+			for (int i = 0; i < orderList.size(); i++) {
+				count += createOrderItem(orderList.get(i), id);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -140,8 +161,24 @@ public class JDBCOrderDAO implements OrderDAO {
 	}
 
 	@Override
-	public void createOrderItem() {
-		// TODO Auto-generated method stub
+	public int createOrderItem(OrderItem item, int orderId) {
+		int count = 0;
+		try {
+			PreparedStatement create = null;
+			String sql = "INSERT INTO orderitems VALUES ( ?, ?, ?, ?, ?, ?)";
+			create = connection.prepareStatement(sql);
+			create.setInt(1, orderId);
+			create.setInt(2, item.getProductId());
+			create.setString(3, item.getSize());
+			create.setString(4, item.getIce());
+			create.setString(5, item.getSugar());
+			create.setDouble(6, item.getPrice());
+			count = create.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return count;
 
 	}
 
